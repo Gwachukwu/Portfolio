@@ -1,16 +1,4 @@
 /**
- * event handler for scrollbar
- */
-window.addEventListener("scroll", function () {
-  const header = document.getElementById("header");
-  if (window.pageYOffset > 40) {
-    header.classList.add("header");
-  } else {
-    header.classList.remove("header");
-  }
-});
-
-/**
  * Event handler harmburger icon
  */
 const harmburgerIcon = document.getElementById("hermburger");
@@ -32,26 +20,50 @@ mobileNav.addEventListener("click", () => {
 });
 
 /**
- * Handles progress bar
+ * event handler for scrollbar
  */
-
 window.addEventListener("scroll", () => {
+  // handler for header class toggle
+  const header = document.getElementById("header");
+  if (header) {
+    header.classList.toggle("header", window.pageYOffset > 40);
+  }
+
+  // handler for progress bar
   const progressBar = document.getElementById("progress__bar");
+  if (!progressBar) return;
+
   const winScroll =
     document.body.scrollTop || document.documentElement.scrollTop;
   const height =
     document.documentElement.scrollHeight -
     document.documentElement.clientHeight;
   const scrolled = (winScroll / height) * 100;
-  if (scrolled === 0) {
-    progressBar.style.display = "none";
-  } else {
-    progressBar.style.display = "block";
-    progressBar.style.backgroundColor = "#cc0066";
-    progressBar.style.width = `${scrolled}%`;
-  }
+
+  progressBar.style.display = scrolled === 0 ? "none" : "block";
+  progressBar.style.backgroundColor = "#cc0066";
+  progressBar.style.width = `${scrolled}%`;
 });
 
 // current year for footer
 const currentYear = new Date().getFullYear();
 document.querySelector(".current-year").innerHTML = currentYear;
+
+// company link span handler
+document.querySelectorAll(".link-span").forEach((el) => {
+  const url = "https://topvu.ca/";
+
+  el.setAttribute("role", "link");
+  el.setAttribute("tabindex", "0");
+  el.style.cursor = "pointer";
+
+  const open = () => window.open(url, "_blank", "noopener,noreferrer");
+
+  el.addEventListener("click", open);
+
+  el.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      open();
+    }
+  });
+});
